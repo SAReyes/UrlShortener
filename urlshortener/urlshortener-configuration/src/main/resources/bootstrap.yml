@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: urlshortener
+  cloud:
+    config:
+      label: develop
+      uri: ${SPRING_CONFIG_URI:http://localhost:8888}
