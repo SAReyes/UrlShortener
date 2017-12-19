@@ -33,7 +33,7 @@ object ShortenerWebHandlerSpecs : Spek({
         val returnRedirectionWhileSavingClick = mock(RetrieveUrlRedirection::class)
         val requestHelper = mock(RequestHelper::class)
 
-        val sut = ShortenerWebHandler(
+        val sut = ShortenerHandler(
                 createAndSaveUrl = createAndSaveUrl,
                 retrieveUrlRedirection = returnRedirectionWhileSavingClick,
                 requestHelper = requestHelper

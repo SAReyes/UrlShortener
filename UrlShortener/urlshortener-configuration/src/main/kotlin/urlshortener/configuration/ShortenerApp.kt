@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
-import urlshortener.configuration.handler.ShortenerWebHandler
+import urlshortener.configuration.handler.ShortenerHandler
 import urlshortener.configuration.util.RequestHelperImpl
 import urlshortener.dataprovider.database.click.ClickRepository
 import urlshortener.dataprovider.database.click.SaveClickDataProvider
@@ -38,7 +38,7 @@ class ShortenerApp(private val clickRepository: ClickRepository,
     }
 
     @Bean
-    fun shortenerWebHandler() = ShortenerWebHandler(
+    fun shortenerWebHandler() = ShortenerHandler(
             createAndSaveUrl = createAndSaveUrl(),
             retrieveUrlRedirection = returnRedirectionWhileSavingClick(),
             requestHelper = ipRetriever()
