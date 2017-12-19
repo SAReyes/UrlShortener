@@ -23,8 +23,8 @@ import urlshortener.usecase.shorturl.ReturnRedirectionImpl
 
 @SpringBootApplication
 @EnableAutoConfiguration
-class UrlShortenerApplication(private val clickRepository: ClickRepository,
-                              private val shortUrlRepository: ShortUrlRepository) {
+class ShortenerApp(private val clickRepository: ClickRepository,
+                   private val shortUrlRepository: ShortUrlRepository) {
 
     @Value("\${urlshortener.qa-api}")
     private val qaApi: String = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
@@ -88,5 +88,5 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
 }
 
 fun main(args: Array<String>) {
-    SpringApplication.run(UrlShortenerApplication::class.java, *args)
+    SpringApplication.run(ShortenerApp::class.java, *args)
 }
