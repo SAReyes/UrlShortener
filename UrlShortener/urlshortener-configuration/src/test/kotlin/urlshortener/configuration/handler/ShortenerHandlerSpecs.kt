@@ -27,7 +27,7 @@ import urlshortener.usecase.shorturl.RetrieveUrlRedirection
 import java.net.URI
 import java.util.*
 
-object ShortenerWebHandlerSpecs : Spek({
+object ShortenerHandlerSpecs : Spek({
     describe("Shortener web handler") {
         val createAndSaveUrl = mock(CreateAndSaveUrl::class)
         val returnRedirectionWhileSavingClick = mock(RetrieveUrlRedirection::class)
