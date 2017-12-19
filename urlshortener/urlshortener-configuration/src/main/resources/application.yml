@@ -1,0 +1,7 @@
+# Spring Datasource JDBC
+spring:
+  datasource:
+    platform: hsqldb
+    url: jdbc:hsqldb:mem:.
+    username: sa
+    driver-class-name: org.hsqldb.jdbcDriver

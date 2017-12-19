@@ -1,3 +1,5 @@
-include 'common'
-include 'demo'
-include 'team'
+rootProject.name = 'urlshorterner-root'
+
+include 'urlshortener:urlshortener-core'
+include 'urlshortener:urlshortener-dataproviders'
+include 'urlshortener:urlshortener-configuration'
