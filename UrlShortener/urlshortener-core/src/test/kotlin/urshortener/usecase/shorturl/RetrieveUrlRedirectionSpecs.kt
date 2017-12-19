@@ -10,7 +10,7 @@ import urlshortener.usecase.click.SaveClick
 import urlshortener.usecase.shorturl.*
 import java.util.*
 
-object ReturnRedirectionWhileSavingClickSpecs : Spek({
+object RetrieveUrlRedirectionSpecs : Spek({
     describe("RetrieveUrlRedirection use case") {
         val find = mock(FindUrlById::class)
         val click = mock(SaveClick::class)
