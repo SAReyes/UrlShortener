@@ -20,8 +20,12 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-jar.enabled = true
-bootJar.enabled = false
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
 
 dependencies {
     compile project(':urlshortener:urlshortener-core')
