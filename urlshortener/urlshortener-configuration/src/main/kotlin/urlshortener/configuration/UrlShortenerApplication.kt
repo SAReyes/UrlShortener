@@ -19,7 +19,7 @@ import urlshortener.dataprovider.system.UrlEncoderDataProvider
 import urlshortener.dataprovider.system.UrlValidatorDataProvider
 import urlshortener.dataprovider.system.UserAgentDataProvider
 import urlshortener.usecase.shorturl.CreateAndSaveUrlImpl
-import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClickImpl
+import urlshortener.usecase.shorturl.ReturnRedirectionImpl
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -40,7 +40,7 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
     @Bean
     fun shortenerWebHandler() = ShortenerWebHandler(
             createAndSaveUrl = createAndSaveUrl(),
-            returnRedirectionWhileSavingClick = returnRedirectionWhileSavingClick(),
+            returnRedirection = returnRedirectionWhileSavingClick(),
             requestHelper = ipRetriever()
     )
 
@@ -54,7 +54,7 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
     )
 
     @Bean
-    fun returnRedirectionWhileSavingClick() = ReturnRedirectionWhileSavingClickImpl(
+    fun returnRedirectionWhileSavingClick() = ReturnRedirectionImpl(
             find = findUrlById(),
             storeClick = saveClick(),
             dateFactory = dateFactory(),

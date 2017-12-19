@@ -23,19 +23,19 @@ import urlshortener.domain.ShortUrl
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
-import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
+import urlshortener.usecase.shorturl.ReturnRedirection
 import java.net.URI
 import java.util.*
 
 object ShortenerWebHandlerSpecs : Spek({
     describe("Shortener web handler") {
         val createAndSaveUrl = mock(CreateAndSaveUrl::class)
-        val returnRedirectionWhileSavingClick = mock(ReturnRedirectionWhileSavingClick::class)
+        val returnRedirectionWhileSavingClick = mock(ReturnRedirection::class)
         val requestHelper = mock(RequestHelper::class)
 
         val sut = ShortenerWebHandler(
                 createAndSaveUrl = createAndSaveUrl,
-                returnRedirectionWhileSavingClick = returnRedirectionWhileSavingClick,
+                returnRedirection = returnRedirectionWhileSavingClick,
                 requestHelper = requestHelper
         )
 

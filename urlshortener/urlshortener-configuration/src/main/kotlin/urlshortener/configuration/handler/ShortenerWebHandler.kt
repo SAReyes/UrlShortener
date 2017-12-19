@@ -16,18 +16,18 @@ import urlshortener.configuration.util.RequestHelper
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
-import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
+import urlshortener.usecase.shorturl.ReturnRedirection
 import java.util.*
 
 @Component
 class ShortenerWebHandler(private val createAndSaveUrl: CreateAndSaveUrl,
-                          private val returnRedirectionWhileSavingClick: ReturnRedirectionWhileSavingClick,
+                          private val returnRedirection: ReturnRedirection,
                           private val requestHelper: RequestHelper) {
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
             .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
             .map {
-                returnRedirectionWhileSavingClick.returnRedirectionWhileSavingClick(
+                returnRedirection.returnRedirectionWhileSavingClick(
                         hash = it.pathVariable("id"),
                         ip = requestHelper.getIp(it),
                         userAgent = requestHelper.getUserAgent(it)
