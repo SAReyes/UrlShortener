@@ -1,8 +1,5 @@
 package urlshortener.dataprovider.database.shorturl
 
-import es.unizar.shortener.provider.database.shorturl.FindUrlByIdDataProvider
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
-import es.unizar.shortener.provider.database.shorturl.ShortUrlRepository
 import org.amshove.kluent.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -10,6 +7,7 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import urlshortener.domain.ShortUrl
 import urlshortener.usecase.exception.NotFoundException
+import java.net.URI
 import java.sql.Date
 import java.util.*
 
@@ -41,7 +39,9 @@ object FindUrlByIdDataProviderSpecs : Spek({
                         mode = 200,
                         safe = null,
                         ip = null,
-                        country = null
+                        country = null,
+                        uri = URI("/hash"),
+                        qr = URI("/qr")
                 )
             }
         }

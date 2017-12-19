@@ -5,3 +5,6 @@ spring:
     url: jdbc:hsqldb:mem:.
     username: sa
     driver-class-name: org.hsqldb.jdbcDriver
+
+urlshortener:
+  qa-api: https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=

@@ -1,6 +1,6 @@
-package es.unizar.shortener.provider.database.click
+package urlshortener.dataprovider.database.click
 
-import es.unizar.shortener.provider.extension.toEntity
+import urlshortener.dataprovider.extension.toEntity
 
 class SaveClickDataProvider(private val repository: ClickRepository): urlshortener.usecase.click.SaveClick {
 

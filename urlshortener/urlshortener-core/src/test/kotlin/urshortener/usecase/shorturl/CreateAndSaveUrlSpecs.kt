@@ -22,7 +22,8 @@ object CreateAndSaveUrlSpecs : Spek({
                 urlValidator = validator,
                 urlEncoder = encoder,
                 dateFactory = date,
-                saveUrl = saveUrl
+                saveUrl = saveUrl,
+                qrApi = "/qa-api/"
         )
 
         given("all parameters are set properly") {
@@ -39,21 +40,23 @@ object CreateAndSaveUrlSpecs : Spek({
                     mode = 200,
                     ip = "ip",
                     safe = false,
-                    country = "country"
+                    country = "country",
+                    domainUri = URI("http://localhost")
             )
 
             it("should store the correct short url") {
                 Verify on saveUrl that saveUrl.saveUrl(ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("/hash"),
+                        uri = URI("http://localhost/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
                         mode = 200,
                         safe = false,
                         ip = "ip",
-                        country = "country"
+                        country = "country",
+                        qr = URI("/qa-api/http://localhost/hash")
                 )) was called
             }
 
@@ -61,14 +64,15 @@ object CreateAndSaveUrlSpecs : Spek({
                 response `should equal` ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("/hash"),
+                        uri = URI("http://localhost/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
                         mode = 200,
                         safe = false,
                         ip = "ip",
-                        country = "country"
+                        country = "country",
+                        qr = URI("/qa-api/http://localhost/hash")
                 )
             }
 
@@ -88,7 +92,8 @@ object CreateAndSaveUrlSpecs : Spek({
                         mode = 200,
                         ip = "ip",
                         safe = false,
-                        country = "country"
+                        country = "country",
+                        domainUri = URI("http://localhost")
                 )
             }
 

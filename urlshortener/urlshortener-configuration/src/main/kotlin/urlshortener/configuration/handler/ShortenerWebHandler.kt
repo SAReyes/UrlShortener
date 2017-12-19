@@ -26,31 +26,35 @@ class ShortenerWebHandler(private val createAndSaveUrl: CreateAndSaveUrl,
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
             .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
-            .map { returnRedirectionWhileSavingClick.returnRedirectionWhileSavingClick(it.pathVariable("id"), getIp(it)) }
-            .flatMap { su ->
-                ServerResponse.status(HttpStatus.valueOf(su.mode))
-                        .header("location", su.target)
-                        .body(su.toMono())
+            .map {
+                returnRedirectionWhileSavingClick.returnRedirectionWhileSavingClick(
+                        hash = it.pathVariable("id"),
+                        ip = ipRetriever.getIp(it)
+                )
+            }
+            .flatMap {
+                ServerResponse.status(HttpStatus.valueOf(it.mode))
+                        .header("location", it.target)
+                        .body(it.toMono())
             }
 
     fun link(sReq: ServerRequest): Mono<ServerResponse> {
         return sReq.bodyToMono(SaveRequest::class.java)
                 .doOnError(BadRequestException::class) { throw BadRequestFluxException(it) }
-                .map { req ->
+                .map {
                     createAndSaveUrl.createAndSaveUrl(
-                            targetUrl = req.url,
-                            sponsor = req.sponsor,
+                            targetUrl = it.url,
+                            domainUri = ipRetriever.getUri(sReq),
+                            sponsor = it.sponsor,
                             owner = UUID.randomUUID().toString(),
                             mode = HttpStatus.TEMPORARY_REDIRECT.value(),
-                            ip = getIp(sReq)
+                            ip = ipRetriever.getIp(sReq)
                     )
                 }
-                .flatMap { su ->
-                    ServerResponse.created(su.uri)
+                .flatMap {
+                    ServerResponse.created(it.uri)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .body(su.toMono())
+                            .body(it.toMono())
                 }
     }
-
-    private fun getIp(sReq: ServerRequest): String = ipRetriever.getIp(sReq)
 }

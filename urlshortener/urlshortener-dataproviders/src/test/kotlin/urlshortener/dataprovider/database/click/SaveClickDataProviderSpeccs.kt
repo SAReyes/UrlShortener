@@ -1,14 +1,11 @@
 package urlshortener.dataprovider.database.click
 
-import es.unizar.shortener.provider.database.click.ClickEntity
-import es.unizar.shortener.provider.database.click.ClickRepository
-import es.unizar.shortener.provider.database.click.SaveClickDataProvider
 import org.amshove.kluent.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
+import urlshortener.dataprovider.database.shorturl.ShortUrlEntity
 import urlshortener.domain.Click
 import java.sql.Date
 import java.util.*
