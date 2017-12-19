@@ -8,6 +8,7 @@ import es.unizar.shortener.provider.database.shorturl.ShortUrlRepository
 import es.unizar.shortener.provider.system.DateFactoryDataProvider
 import es.unizar.shortener.provider.system.UrlEncoderDataProvider
 import es.unizar.shortener.provider.system.UrlValidatorDataProvider
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -23,6 +24,9 @@ import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClickImpl
 @EnableAutoConfiguration
 class UrlShortenerApplication(private val clickRepository: ClickRepository,
                               private val shortUrlRepository: ShortUrlRepository) {
+
+    @Value("\${urlshortener.qa-api}")
+    private val qaApi: String = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
 
     @Bean
     fun router() = router {
@@ -44,7 +48,8 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
             saveUrl = saveUrl(),
             urlValidator = urlValidator(),
             urlEncoder = urlEncoder(),
-            dateFactory = dateFactory()
+            dateFactory = dateFactory(),
+            qrApi = qaApi
     )
 
     @Bean

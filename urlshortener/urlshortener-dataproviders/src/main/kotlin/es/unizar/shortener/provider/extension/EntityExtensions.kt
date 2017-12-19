@@ -1,6 +1,7 @@
 package es.unizar.shortener.provider.extension
 
 import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
+import java.net.URI
 import java.util.*
 
 fun ShortUrlEntity.toDomain() = urlshortener.domain.ShortUrl(
@@ -12,5 +13,7 @@ fun ShortUrlEntity.toDomain() = urlshortener.domain.ShortUrl(
         mode = mode,
         safe = safe,
         ip = ip,
-        country = country
+        country = country,
+        uri = URI("/$hash"),
+        qr = URI("/qr")
 )
