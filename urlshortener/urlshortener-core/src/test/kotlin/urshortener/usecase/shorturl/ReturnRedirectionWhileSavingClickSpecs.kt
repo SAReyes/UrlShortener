@@ -11,14 +11,14 @@ import urlshortener.usecase.shorturl.*
 import java.util.*
 
 object ReturnRedirectionWhileSavingClickSpecs : Spek({
-    describe("ReturnRedirection use case") {
+    describe("RetrieveUrlRedirection use case") {
         val find = mock(FindUrlById::class)
         val click = mock(SaveClick::class)
         val date = mock(DateFactory::class)
         val browser = mock(RetrieveBrowser::class)
         val platform = mock(RetrievePlatform::class)
 
-        val sut = ReturnRedirectionImpl(
+        val sut = RetrieveUrlRedirectionImpl(
                 find = find,
                 storeClick = click,
                 dateFactory = date,
