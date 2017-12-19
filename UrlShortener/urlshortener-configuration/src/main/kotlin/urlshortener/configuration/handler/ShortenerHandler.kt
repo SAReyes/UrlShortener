@@ -12,49 +12,50 @@ import reactor.core.publisher.toMono
 import urlshortener.configuration.exception.BadRequestFluxException
 import urlshortener.configuration.exception.NotFoundFluxException
 import urlshortener.configuration.model.SaveRequest
-import urlshortener.configuration.util.IpRetriever
+import urlshortener.configuration.util.RequestHelper
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
-import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
+import urlshortener.usecase.shorturl.RetrieveUrlRedirection
 import java.util.*
 
 @Component
-class ShortenerWebHandler(private val createAndSaveUrl: CreateAndSaveUrl,
-                          private val returnRedirectionWhileSavingClick: ReturnRedirectionWhileSavingClick,
-                          private val ipRetriever: IpRetriever) {
+class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
+                       private val retrieveUrlRedirection: RetrieveUrlRedirection,
+                       private val requestHelper: RequestHelper) {
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
             .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
-            .map {
-                returnRedirectionWhileSavingClick.returnRedirectionWhileSavingClick(
-                        hash = it.pathVariable("id"),
-                        ip = ipRetriever.getIp(it)
+            .map { req ->
+                retrieveUrlRedirection.returnRedirectionWhileSavingClick(
+                        hash = req.pathVariable("id"),
+                        ip = requestHelper.getIp(req),
+                        userAgent = requestHelper.getUserAgent(req)
                 )
             }
-            .flatMap {
-                ServerResponse.status(HttpStatus.valueOf(it.mode))
-                        .header("location", it.target)
-                        .body(it.toMono())
+            .flatMap { su ->
+                ServerResponse.status(HttpStatus.valueOf(su.mode))
+                        .header("location", su.target)
+                        .body(su.toMono())
             }
 
     fun link(sReq: ServerRequest): Mono<ServerResponse> {
         return sReq.bodyToMono(SaveRequest::class.java)
                 .doOnError(BadRequestException::class) { throw BadRequestFluxException(it) }
-                .map {
+                .map { req ->
                     createAndSaveUrl.createAndSaveUrl(
-                            targetUrl = it.url,
-                            domainUri = ipRetriever.getUri(sReq),
-                            sponsor = it.sponsor,
+                            targetUrl = req.url,
+                            domainUri = requestHelper.getUri(sReq),
+                            sponsor = req.sponsor,
                             owner = UUID.randomUUID().toString(),
                             mode = HttpStatus.TEMPORARY_REDIRECT.value(),
-                            ip = ipRetriever.getIp(sReq)
+                            ip = requestHelper.getIp(sReq)
                     )
                 }
-                .flatMap {
-                    ServerResponse.created(it.uri)
+                .flatMap { su ->
+                    ServerResponse.created(su.uri)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .body(it.toMono())
+                            .body(su.toMono())
                 }
     }
 }

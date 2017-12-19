@@ -10,6 +10,7 @@ subprojects {
         springCloudVersion = 'Finchley.M5'
         guavaVersion = '23.0'
         commonsVersion = '1.6'
+        yauaaVersion = '3.3'
     }
 
     ext.libs = [

@@ -2,9 +2,21 @@ package urlshortener.configuration.util
 
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.server.adapter.DefaultServerWebExchange
+import urlshortener.usecase.exception.BadRequestException
 import java.net.URI
 
-class IpRetrieverImpl : IpRetriever {
+class RequestHelperImpl : RequestHelper {
+
+    override fun getUserAgent(sReq: ServerRequest): String {
+        val uas = sReq.headers().header("User-Agent")
+
+        if(uas.size != 1) {
+            throw BadRequestException("found multiple, or none, user agents")
+        }
+
+        return uas.first()
+    }
+
     override fun getIp(sReq: ServerRequest): String {
         val f = sReq.javaClass.getDeclaredField("exchange")
         f.isAccessible = true
