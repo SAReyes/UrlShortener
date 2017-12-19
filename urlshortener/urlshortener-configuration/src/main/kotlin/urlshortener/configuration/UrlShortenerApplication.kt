@@ -58,8 +58,8 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
             find = findUrlById(),
             storeClick = saveClick(),
             dateFactory = dateFactory(),
-            getBrowserFromUserAgent = userAgentProvider(),
-            getPlatformFromUserAgent = userAgentProvider()
+            getBrowser = userAgentProvider(),
+            getPlatform = userAgentProvider()
     )
 
     @Bean

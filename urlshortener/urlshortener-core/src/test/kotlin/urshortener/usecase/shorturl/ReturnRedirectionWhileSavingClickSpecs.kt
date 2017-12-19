@@ -15,23 +15,23 @@ object ReturnRedirectionWhileSavingClickSpecs : Spek({
         val find = mock(FindUrlById::class)
         val click = mock(SaveClick::class)
         val date = mock(DateFactory::class)
-        val browser = mock(GetBrowserFromUserAgent::class)
-        val platform = mock(GetPlatformFromUserAgent::class)
+        val browser = mock(GetBrowser::class)
+        val platform = mock(GetPlatform::class)
 
         val sut = ReturnRedirectionWhileSavingClickImpl(
                 find = find,
                 storeClick = click,
                 dateFactory = date,
-                getBrowserFromUserAgent = browser,
-                getPlatformFromUserAgent = platform
+                getBrowser = browser,
+                getPlatform = platform
         )
 
         given("the date factory returns a specific date") {
             val aDate = GregorianCalendar(2017, 12, 17).time
 
             When calling date.now() `it returns` aDate
-            When calling browser.getBrowserFromUserAgent("ua") `it returns` "ua-browser"
-            When calling platform.getPlatformFromUserAgent("ua") `it returns` "ua-platform"
+            When calling browser.getBrowser("ua") `it returns` "ua-browser"
+            When calling platform.getPlatform("ua") `it returns` "ua-platform"
 
             it("should store the correct data on click table") {
                 sut.returnRedirectionWhileSavingClick(hash = "hash", ip = "ip", userAgent = "ua")

@@ -16,8 +16,6 @@ import urlshortener.configuration.util.RequestHelper
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
-import urlshortener.usecase.shorturl.GetBrowserFromUserAgent
-import urlshortener.usecase.shorturl.GetPlatformFromUserAgent
 import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
 import java.util.*
 
