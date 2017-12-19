@@ -6,9 +6,9 @@ import urlshortener.usecase.click.SaveClick
 
 class ReturnRedirectionWhileSavingClickImpl(private val find: FindUrlById,
                                             private val storeClick: SaveClick,
+                                            private val dateFactory: DateFactory,
                                             private val getPlatform: GetPlatform,
-                                            private val getBrowser: GetBrowser,
-                                            private val dateFactory: DateFactory) : ReturnRedirectionWhileSavingClick {
+                                            private val getBrowser: GetBrowser) : ReturnRedirectionWhileSavingClick {
 
     override fun returnRedirectionWhileSavingClick(hash: String,
                                                    ip: String,
