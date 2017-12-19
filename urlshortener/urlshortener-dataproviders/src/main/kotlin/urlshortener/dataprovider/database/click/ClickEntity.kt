@@ -1,6 +1,6 @@
-package es.unizar.shortener.provider.database.click
+package urlshortener.dataprovider.database.click
 
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
+import urlshortener.dataprovider.database.shorturl.ShortUrlEntity
 
 
 @javax.persistence.Entity

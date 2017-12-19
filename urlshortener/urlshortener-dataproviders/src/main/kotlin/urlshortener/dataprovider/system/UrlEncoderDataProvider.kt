@@ -1,4 +1,4 @@
-package es.unizar.shortener.provider.system
+package urlshortener.dataprovider.system
 
 import com.google.common.hash.Hashing
 import urlshortener.usecase.shorturl.UrlEncoder

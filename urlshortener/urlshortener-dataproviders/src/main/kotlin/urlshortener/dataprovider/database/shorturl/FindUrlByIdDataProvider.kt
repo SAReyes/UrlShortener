@@ -1,6 +1,6 @@
-package es.unizar.shortener.provider.database.shorturl
+package urlshortener.dataprovider.database.shorturl
 
-import es.unizar.shortener.provider.extension.toDomain
+import urlshortener.dataprovider.extension.toDomain
 
 class FindUrlByIdDataProvider(private val repository: ShortUrlRepository) : urlshortener.usecase.shorturl.FindUrlById {
 

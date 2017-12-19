@@ -1,13 +1,13 @@
 package urlshortener.configuration
 
-import es.unizar.shortener.provider.database.click.ClickRepository
-import es.unizar.shortener.provider.database.click.SaveClickDataProvider
-import es.unizar.shortener.provider.database.shorturl.FindUrlByIdDataProvider
-import es.unizar.shortener.provider.database.shorturl.SaveUrlDataProvider
-import es.unizar.shortener.provider.database.shorturl.ShortUrlRepository
-import es.unizar.shortener.provider.system.DateFactoryDataProvider
-import es.unizar.shortener.provider.system.UrlEncoderDataProvider
-import es.unizar.shortener.provider.system.UrlValidatorDataProvider
+import urlshortener.dataprovider.database.click.ClickRepository
+import urlshortener.dataprovider.database.click.SaveClickDataProvider
+import urlshortener.dataprovider.database.shorturl.FindUrlByIdDataProvider
+import urlshortener.dataprovider.database.shorturl.SaveUrlDataProvider
+import urlshortener.dataprovider.database.shorturl.ShortUrlRepository
+import urlshortener.dataprovider.system.DateFactoryDataProvider
+import urlshortener.dataprovider.system.UrlEncoderDataProvider
+import urlshortener.dataprovider.system.UrlValidatorDataProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration

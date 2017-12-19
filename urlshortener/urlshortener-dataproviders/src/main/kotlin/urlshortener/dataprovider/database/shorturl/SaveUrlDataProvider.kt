@@ -1,6 +1,6 @@
-package es.unizar.shortener.provider.database.shorturl
+package urlshortener.dataprovider.database.shorturl
 
-import es.unizar.shortener.provider.extension.toEntity
+import urlshortener.dataprovider.extension.toEntity
 
 class SaveUrlDataProvider(private val repository: ShortUrlRepository) : urlshortener.usecase.shorturl.SaveUrl {
 

@@ -1,19 +1,17 @@
-package es.unizar.shortener.provider.extension
+package urlshortener.dataprovider.extension
 
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
-import java.net.URI
-import java.util.*
+import urlshortener.dataprovider.database.shorturl.ShortUrlEntity
 
 fun ShortUrlEntity.toDomain() = urlshortener.domain.ShortUrl(
         hash = hash,
         target = target,
         sponsor = sponsor,
-        created = Date(created.time),
+        created = java.util.Date(created.time),
         owner = owner,
         mode = mode,
         safe = safe,
         ip = ip,
         country = country,
-        uri = URI("/$hash"),
-        qr = URI("/qr")
+        uri = java.net.URI("/$hash"),
+        qr = java.net.URI("/qr")
 )

@@ -1,7 +1,7 @@
-package es.unizar.shortener.provider.extension
+package urlshortener.dataprovider.extension
 
-import es.unizar.shortener.provider.database.click.ClickEntity
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
+import urlshortener.dataprovider.database.click.ClickEntity
+import urlshortener.dataprovider.database.shorturl.ShortUrlEntity
 import java.sql.Date
 
 fun urlshortener.domain.Click.toEntity() = ClickEntity(

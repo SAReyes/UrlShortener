@@ -1,14 +1,12 @@
 package urlshortener.dataprovider.database.shorturl
 
-import es.unizar.shortener.provider.database.shorturl.SaveUrlDataProvider
-import es.unizar.shortener.provider.database.shorturl.ShortUrlEntity
-import es.unizar.shortener.provider.database.shorturl.ShortUrlRepository
 import org.amshove.kluent.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import urlshortener.domain.ShortUrl
+import java.net.URI
 import java.sql.Date
 import java.util.*
 
@@ -30,7 +28,9 @@ object SaveUrlDataProviderSpecs : Spek({
                     mode = 200,
                     safe = true,
                     ip = "ip",
-                    country = "country"
+                    country = "country",
+                    uri = URI("/hash"),
+                    qr = URI("/qr")
             )
 
             it("should save the correct entity object") {

@@ -1,4 +1,4 @@
-package es.unizar.shortener.provider.system
+package urlshortener.dataprovider.system
 
 import urlshortener.usecase.shorturl.UrlValidator
 import org.apache.commons.validator.routines.UrlValidator as commonsValidator

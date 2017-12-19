@@ -24,6 +24,7 @@ import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
 import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
+import java.net.URI
 import java.util.*
 
 object ShortenerWebHandlerSpecs : Spek({
@@ -59,7 +60,9 @@ object ShortenerWebHandlerSpecs : Spek({
                             mode = 307,
                             safe = true,
                             ip = null,
-                            country = null
+                            country = null,
+                            qr = URI("/qr"),
+                            uri = URI("http://localhost/redirectTo")
                     )
 
             When calling ipRetriever.getIp(any(ServerRequest::class)) `it returns` "127.0.0.1"
@@ -94,9 +97,13 @@ object ShortenerWebHandlerSpecs : Spek({
 
         given("the user wants to create a link reference") {
             val aDate = GregorianCalendar(2017, 12, 17).time
+            val uri = URI("http://localhost")
+
+            When calling ipRetriever.getUri(any(ServerRequest::class)) `it returns` uri
 
             When calling createAndSaveUrl.createAndSaveUrl(
                     targetUrl = eq("a-target"),
+                    domainUri = eq(uri),
                     sponsor = eq("sponsor"),
                     owner = any(String::class),
                     mode = any(Int::class),
@@ -112,7 +119,9 @@ object ShortenerWebHandlerSpecs : Spek({
                     mode = 200,
                     safe = true,
                     ip = "ip",
-                    country = null
+                    country = null,
+                    uri = URI("http://localhost/a-hash"),
+                    qr = URI("")
             )
 
             it("should respond with the correct data") {
@@ -124,7 +133,7 @@ object ShortenerWebHandlerSpecs : Spek({
                         .exchange()
                         .expectStatus().isCreated
                         .expectBody()
-                        .jsonPath("$.uri").isEqualTo("/a-hash")
+                        .jsonPath("$.uri").isEqualTo("http://localhost/a-hash")
                         .jsonPath("$.hash").isEqualTo("a-hash")
                         .jsonPath("$.target").isEqualTo("http://google.es")
             }
@@ -138,7 +147,8 @@ object ShortenerWebHandlerSpecs : Spek({
                     mode = any(Int::class),
                     ip = any(String::class),
                     safe = any(Boolean::class),
-                    country = eq(null)
+                    country = eq(null),
+                    domainUri = eq(URI("http://localhost"))
             ) `it throws` BadRequestException("bad request")
 
             it("should return BadRequestFluxException") {

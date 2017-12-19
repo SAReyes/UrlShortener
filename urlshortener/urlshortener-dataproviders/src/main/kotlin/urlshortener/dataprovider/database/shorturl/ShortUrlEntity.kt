@@ -1,4 +1,4 @@
-package es.unizar.shortener.provider.database.shorturl
+package urlshortener.dataprovider.database.shorturl
 
 @javax.persistence.Entity
 data class ShortUrlEntity(@javax.persistence.Id
