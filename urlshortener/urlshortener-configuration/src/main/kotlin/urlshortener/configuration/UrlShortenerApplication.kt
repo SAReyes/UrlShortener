@@ -1,13 +1,5 @@
 package urlshortener.configuration
 
-import urlshortener.dataprovider.database.click.ClickRepository
-import urlshortener.dataprovider.database.click.SaveClickDataProvider
-import urlshortener.dataprovider.database.shorturl.FindUrlByIdDataProvider
-import urlshortener.dataprovider.database.shorturl.SaveUrlDataProvider
-import urlshortener.dataprovider.database.shorturl.ShortUrlRepository
-import urlshortener.dataprovider.system.DateFactoryDataProvider
-import urlshortener.dataprovider.system.UrlEncoderDataProvider
-import urlshortener.dataprovider.system.UrlValidatorDataProvider
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -16,7 +8,16 @@ import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
 import urlshortener.configuration.handler.ShortenerWebHandler
-import urlshortener.configuration.util.IpRetrieverImpl
+import urlshortener.configuration.util.RequestHelperImpl
+import urlshortener.dataprovider.database.click.ClickRepository
+import urlshortener.dataprovider.database.click.SaveClickDataProvider
+import urlshortener.dataprovider.database.shorturl.FindUrlByIdDataProvider
+import urlshortener.dataprovider.database.shorturl.SaveUrlDataProvider
+import urlshortener.dataprovider.database.shorturl.ShortUrlRepository
+import urlshortener.dataprovider.system.DateFactoryDataProvider
+import urlshortener.dataprovider.system.UrlEncoderDataProvider
+import urlshortener.dataprovider.system.UrlValidatorDataProvider
+import urlshortener.dataprovider.system.UserAgentDataProvider
 import urlshortener.usecase.shorturl.CreateAndSaveUrlImpl
 import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClickImpl
 
@@ -40,7 +41,7 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
     fun shortenerWebHandler() = ShortenerWebHandler(
             createAndSaveUrl = createAndSaveUrl(),
             returnRedirectionWhileSavingClick = returnRedirectionWhileSavingClick(),
-            ipRetriever = ipRetriever()
+            requestHelper = ipRetriever()
     )
 
     @Bean
@@ -56,11 +57,16 @@ class UrlShortenerApplication(private val clickRepository: ClickRepository,
     fun returnRedirectionWhileSavingClick() = ReturnRedirectionWhileSavingClickImpl(
             find = findUrlById(),
             storeClick = saveClick(),
-            dateFactory = dateFactory()
+            dateFactory = dateFactory(),
+            getBrowserFromUserAgent = userAgentProvider(),
+            getPlatformFromUserAgent = userAgentProvider()
     )
 
     @Bean
-    fun ipRetriever() = IpRetrieverImpl()
+    fun userAgentProvider() = UserAgentDataProvider()
+
+    @Bean
+    fun ipRetriever() = RequestHelperImpl()
 
     @Bean
     fun urlValidator() = UrlValidatorDataProvider()

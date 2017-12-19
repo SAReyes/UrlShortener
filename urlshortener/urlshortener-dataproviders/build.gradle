@@ -26,6 +26,8 @@ bootJar.enabled = false
 dependencies {
     compile project(':urlshortener:urlshortener-core')
 
+    compile "nl.basjes.parse.useragent:yauaa:${yauaaVersion}"
+
     compile "com.google.guava:guava:${guavaVersion}"
     compile "commons-validator:commons-validator:${commonsVersion}"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"

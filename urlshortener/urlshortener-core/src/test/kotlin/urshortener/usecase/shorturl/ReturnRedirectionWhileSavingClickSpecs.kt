@@ -7,9 +7,7 @@ import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
 import urlshortener.domain.Click
 import urlshortener.usecase.click.SaveClick
-import urlshortener.usecase.shorturl.DateFactory
-import urlshortener.usecase.shorturl.FindUrlById
-import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClickImpl
+import urlshortener.usecase.shorturl.*
 import java.util.*
 
 object ReturnRedirectionWhileSavingClickSpecs : Spek({
@@ -17,29 +15,41 @@ object ReturnRedirectionWhileSavingClickSpecs : Spek({
         val find = mock(FindUrlById::class)
         val click = mock(SaveClick::class)
         val date = mock(DateFactory::class)
+        val browser = mock(GetBrowserFromUserAgent::class)
+        val platform = mock(GetPlatformFromUserAgent::class)
 
         val sut = ReturnRedirectionWhileSavingClickImpl(
                 find = find,
                 storeClick = click,
-                dateFactory = date
+                dateFactory = date,
+                getBrowserFromUserAgent = browser,
+                getPlatformFromUserAgent = platform
         )
 
         given("the date factory returns a specific date") {
             val aDate = GregorianCalendar(2017, 12, 17).time
 
             When calling date.now() `it returns` aDate
+            When calling browser.getBrowserFromUserAgent("ua") `it returns` "ua-browser"
+            When calling platform.getPlatformFromUserAgent("ua") `it returns` "ua-platform"
 
             it("should store the correct data on click table") {
-                sut.returnRedirectionWhileSavingClick(hash = "hash", ip = "ip")
+                sut.returnRedirectionWhileSavingClick(hash = "hash", ip = "ip", userAgent = "ua")
 
-                Verify on click that click.saveClick(Click(hash = "hash", ip = "ip", created = aDate)) was called
+                Verify on click that click.saveClick(Click(
+                        hash = "hash",
+                        ip = "ip",
+                        created = aDate,
+                        browser = "ua-browser",
+                        platform = "ua-platform"
+                )) was called
             }
         }
 
         given("a specific hash") {
 
             it("should fetch for the correct url") {
-                sut.returnRedirectionWhileSavingClick(hash = "some-hash", ip = "ip")
+                sut.returnRedirectionWhileSavingClick(hash = "some-hash", ip = "ip", userAgent = "ua")
 
                 Verify on find that find.findUrlById(hash = "hash") was called
             }

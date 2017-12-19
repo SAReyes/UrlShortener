@@ -12,24 +12,27 @@ import reactor.core.publisher.toMono
 import urlshortener.configuration.exception.BadRequestFluxException
 import urlshortener.configuration.exception.NotFoundFluxException
 import urlshortener.configuration.model.SaveRequest
-import urlshortener.configuration.util.IpRetriever
+import urlshortener.configuration.util.RequestHelper
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
+import urlshortener.usecase.shorturl.GetBrowserFromUserAgent
+import urlshortener.usecase.shorturl.GetPlatformFromUserAgent
 import urlshortener.usecase.shorturl.ReturnRedirectionWhileSavingClick
 import java.util.*
 
 @Component
 class ShortenerWebHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                           private val returnRedirectionWhileSavingClick: ReturnRedirectionWhileSavingClick,
-                          private val ipRetriever: IpRetriever) {
+                          private val requestHelper: RequestHelper) {
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
             .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
             .map {
                 returnRedirectionWhileSavingClick.returnRedirectionWhileSavingClick(
                         hash = it.pathVariable("id"),
-                        ip = ipRetriever.getIp(it)
+                        ip = requestHelper.getIp(it),
+                        userAgent = requestHelper.getUserAgent(it)
                 )
             }
             .flatMap {
@@ -44,11 +47,11 @@ class ShortenerWebHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                 .map {
                     createAndSaveUrl.createAndSaveUrl(
                             targetUrl = it.url,
-                            domainUri = ipRetriever.getUri(sReq),
+                            domainUri = requestHelper.getUri(sReq),
                             sponsor = it.sponsor,
                             owner = UUID.randomUUID().toString(),
                             mode = HttpStatus.TEMPORARY_REDIRECT.value(),
-                            ip = ipRetriever.getIp(sReq)
+                            ip = requestHelper.getIp(sReq)
                     )
                 }
                 .flatMap {

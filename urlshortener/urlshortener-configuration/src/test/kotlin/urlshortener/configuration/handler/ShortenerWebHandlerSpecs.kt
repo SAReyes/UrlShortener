@@ -18,7 +18,7 @@ import reactor.test.test
 import urlshortener.configuration.exception.BadRequestFluxException
 import urlshortener.configuration.exception.NotFoundFluxException
 import urlshortener.configuration.model.SaveRequest
-import urlshortener.configuration.util.IpRetriever
+import urlshortener.configuration.util.RequestHelper
 import urlshortener.domain.ShortUrl
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
@@ -31,12 +31,12 @@ object ShortenerWebHandlerSpecs : Spek({
     describe("Shortener web handler") {
         val createAndSaveUrl = mock(CreateAndSaveUrl::class)
         val returnRedirectionWhileSavingClick = mock(ReturnRedirectionWhileSavingClick::class)
-        val ipRetriever = mock(IpRetriever::class)
+        val requestHelper = mock(RequestHelper::class)
 
         val sut = ShortenerWebHandler(
                 createAndSaveUrl = createAndSaveUrl,
                 returnRedirectionWhileSavingClick = returnRedirectionWhileSavingClick,
-                ipRetriever = ipRetriever
+                requestHelper = requestHelper
         )
 
         val routerFunction = router {
@@ -50,7 +50,7 @@ object ShortenerWebHandlerSpecs : Spek({
             val aDate = GregorianCalendar(2017, 12, 17).time
 
             When calling returnRedirectionWhileSavingClick
-                    .returnRedirectionWhileSavingClick("redirectTo", "127.0.0.1") `it returns`
+                    .returnRedirectionWhileSavingClick("redirectTo", "127.0.0.1", "ua") `it returns`
                     ShortUrl(
                             hash = "redirectTo",
                             target = "https://google.es",
@@ -65,7 +65,8 @@ object ShortenerWebHandlerSpecs : Spek({
                             uri = URI("http://localhost/redirectTo")
                     )
 
-            When calling ipRetriever.getIp(any(ServerRequest::class)) `it returns` "127.0.0.1"
+            When calling requestHelper.getIp(any(ServerRequest::class)) `it returns` "127.0.0.1"
+            When calling requestHelper.getUserAgent(any(ServerRequest::class)) `it returns` "ua"
 
             it("should relocate the client to the target") {
                 client.get()
@@ -80,7 +81,8 @@ object ShortenerWebHandlerSpecs : Spek({
 
         given("a redirection does not exists") {
             When calling returnRedirectionWhileSavingClick
-                    .returnRedirectionWhileSavingClick(eq("error"), any(String::class)) `it throws` NotFoundException("not found")
+                    .returnRedirectionWhileSavingClick(eq("error"), any(String::class), eq("ua")) `it throws`
+                    NotFoundException("not found")
 
             it("should return NotFoundFluxException") {
                 client.get()
@@ -99,7 +101,7 @@ object ShortenerWebHandlerSpecs : Spek({
             val aDate = GregorianCalendar(2017, 12, 17).time
             val uri = URI("http://localhost")
 
-            When calling ipRetriever.getUri(any(ServerRequest::class)) `it returns` uri
+            When calling requestHelper.getUri(any(ServerRequest::class)) `it returns` uri
 
             When calling createAndSaveUrl.createAndSaveUrl(
                     targetUrl = eq("a-target"),
