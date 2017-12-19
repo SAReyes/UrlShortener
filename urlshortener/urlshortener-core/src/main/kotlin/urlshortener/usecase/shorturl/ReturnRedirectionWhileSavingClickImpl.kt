@@ -3,6 +3,8 @@ package urlshortener.usecase.shorturl
 import urlshortener.domain.Click
 import urlshortener.domain.ShortUrl
 import urlshortener.usecase.click.SaveClick
+import urlshortener.usecase.shorturl.GetPlatformFromUserAgent
+import urlshortener.usecase.shorturl.GetBrowserFromUserAgent
 
 class ReturnRedirectionWhileSavingClickImpl(private val find: FindUrlById,
                                             private val storeClick: SaveClick,
