@@ -1,6 +1,6 @@
 package urlshortener.usecase.shorturl
 
-interface GetBrowser {
+interface RetrieveBrowser {
 
     fun getBrowser(ua: String): String
 }

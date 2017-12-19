@@ -1,6 +1,6 @@
 package urlshortener.usecase.shorturl
 
-interface GetPlatform {
+interface RetrievePlatform {
 
     fun getPlatform(ua: String): String
 }

@@ -1,10 +1,10 @@
 package urlshortener.dataprovider.system
 
 import nl.basjes.parse.useragent.UserAgentAnalyzer
-import urlshortener.usecase.shorturl.GetBrowser
-import urlshortener.usecase.shorturl.GetPlatform
+import urlshortener.usecase.shorturl.RetrieveBrowser
+import urlshortener.usecase.shorturl.RetrievePlatform
 
-class UserAgentDataProvider : GetPlatform, GetBrowser {
+class UserAgentDataProvider : RetrievePlatform, RetrieveBrowser {
 
     private val uaParser: UserAgentAnalyzer = UserAgentAnalyzer.newBuilder()
             .hideMatcherLoadStats()

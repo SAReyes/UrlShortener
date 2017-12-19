@@ -15,15 +15,15 @@ object ReturnRedirectionWhileSavingClickSpecs : Spek({
         val find = mock(FindUrlById::class)
         val click = mock(SaveClick::class)
         val date = mock(DateFactory::class)
-        val browser = mock(GetBrowser::class)
-        val platform = mock(GetPlatform::class)
+        val browser = mock(RetrieveBrowser::class)
+        val platform = mock(RetrievePlatform::class)
 
         val sut = ReturnRedirectionWhileSavingClickImpl(
                 find = find,
                 storeClick = click,
                 dateFactory = date,
-                getBrowser = browser,
-                getPlatform = platform
+                retrieveBrowser = browser,
+                retrievePlatform = platform
         )
 
         given("the date factory returns a specific date") {
