@@ -16,6 +16,9 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'org.jetbrains.kotlin.plugin.spring'
 apply plugin: 'kotlin-spring'
 
+jar.enabled = true
+bootJar.enabled = false
+
 repositories {
     mavenCentral()
     maven { url "https://repo.spring.io/milestone" }
