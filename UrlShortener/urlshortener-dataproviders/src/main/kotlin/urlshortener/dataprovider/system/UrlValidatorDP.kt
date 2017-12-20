@@ -8,9 +8,9 @@ import java.net.URI
 import java.util.*
 import org.apache.commons.validator.routines.UrlValidator as commonsValidator
 
-class UrlValidatorDataProvider(private val spamCheckers: List<SpamChecker>,
-                               private val dateFactory: DateFactory,
-                               private val safetyUrlDateLimit: Date) : UrlValidator {
+class UrlValidatorDP(private val spamCheckers: List<SpamChecker>,
+                     private val dateFactory: DateFactory,
+                     private val safetyUrlDateLimit: Date) : UrlValidator {
 
     override fun shouldCheckSafety(url: ShortUrl, now: Date): Boolean {
         val probability =

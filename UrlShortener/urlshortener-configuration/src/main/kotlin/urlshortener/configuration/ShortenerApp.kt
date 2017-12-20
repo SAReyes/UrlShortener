@@ -16,7 +16,7 @@ import urlshortener.dataprovider.database.shorturl.SaveUrlDataProvider
 import urlshortener.dataprovider.database.shorturl.ShortUrlRepository
 import urlshortener.dataprovider.system.DateFactoryDataProvider
 import urlshortener.dataprovider.system.UrlEncoderDataProvider
-import urlshortener.dataprovider.system.UrlValidatorDataProvider
+import urlshortener.dataprovider.system.UrlValidatorDP
 import urlshortener.dataprovider.system.UserAgentDataProvider
 import urlshortener.dataprovider.system.spamlisting.SpamHausSpamChecker
 import urlshortener.dataprovider.system.spamlisting.SurblSpamChecker
@@ -78,8 +78,8 @@ class ShortenerApp(private val clickRepository: ClickRepository,
     fun ipRetriever() = RequestHelperImpl()
 
     @Bean
-    fun urlValidator(): UrlValidatorDataProvider {
-        return UrlValidatorDataProvider(
+    fun urlValidator(): UrlValidatorDP {
+        return UrlValidatorDP(
                 spamCheckers = arrayListOf(SpamHausSpamChecker(), SurblSpamChecker(), UriblSpamChecker()),
                 dateFactory = dateFactory(),
                 safetyUrlDateLimit = Date(safetyDateLimitString.toLong() * 24 * 60 * 60 * 1000)
