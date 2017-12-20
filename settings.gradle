@@ -1,5 +1,5 @@
-rootProject.name = 'urlshorterner-root'
+rootProject.name = 'urlshortener'
 
-include 'urlshortener:urlshortener-core'
-include 'urlshortener:urlshortener-dataproviders'
-include 'urlshortener:urlshortener-configuration'
+include 'urlshortener-core'
+include 'urlshortener-dataproviders'
+include 'urlshortener-configuration'
