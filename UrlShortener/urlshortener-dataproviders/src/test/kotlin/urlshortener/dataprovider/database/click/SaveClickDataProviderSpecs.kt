@@ -10,7 +10,7 @@ import urlshortener.domain.Click
 import java.sql.Date
 import java.util.*
 
-object SaveClickDataProviderSpeccs : Spek({
+object SaveClickDataProviderSpecs : Spek({
     describe("SaveClick data provider") {
         val repository = mock(ClickRepository::class)
 
@@ -44,7 +44,8 @@ object SaveClickDataProviderSpeccs : Spek({
                                 mode = 500,
                                 safe = null,
                                 ip = null,
-                                country = null
+                                country = null,
+                                safetyLastChecked = Date(aDate.time)
                         ),
                         created = Date(aDate.time),
                         referrer = "referrer",

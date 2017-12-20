@@ -18,22 +18,24 @@ class CreateAndSaveUrlImpl(private val urlValidator: UrlValidator,
                                   ip: String,
                                   safe: Boolean,
                                   country: String?): ShortUrl {
-        if (urlValidator.validate(url = targetUrl)) {
+        if (urlValidator.validate(url = targetUrl) && !urlValidator.isSpam(url = targetUrl)) {
             val id = urlEncoder.encode(targetUrl)
             val hashUri = domainUri.resolve("/$id")
+            val now = dateFactory.now()
 
             val su = ShortUrl(
                     hash = id,
                     target = targetUrl,
                     uri = hashUri,
                     sponsor = sponsor,
-                    created = dateFactory.now(),
+                    created = now,
                     owner = owner,
                     mode = mode,
                     safe = safe,
                     ip = ip,
                     country = country,
-                    qr = URI("$qrApi$hashUri")
+                    qr = URI("$qrApi$hashUri"),
+                    safetyLastChecked = now
             )
 
             saveUrl.saveUrl(su)

@@ -1,15 +1,20 @@
 package urlshortener.dataprovider.database.shorturl
 
-@javax.persistence.Entity
-data class ShortUrlEntity(@javax.persistence.Id
+import java.sql.Date
+import javax.persistence.Entity
+import javax.persistence.Id
+
+@Entity
+data class ShortUrlEntity(@Id
                           var hash: String,
                           var target: String,
                           var sponsor: String? = null,
-                          var created: java.sql.Date,
+                          var created: Date,
                           var owner: String? = null,
                           var mode: Int = 500,
                           var safe: Boolean? = null,
                           var ip: String? = null,
-                          var country: String? = null) {
-    constructor(): this(hash = "", target = "", created = java.sql.Date(0))
+                          var country: String? = null,
+                          var safetyLastChecked: Date) {
+    constructor() : this(hash = "", target = "", created = Date(0), safetyLastChecked = Date(0))
 }

@@ -1,3 +1,5 @@
 package urlshortener.dataprovider.database.click
 
-interface ClickRepository: org.springframework.data.repository.CrudRepository<ClickEntity, Long>
+import org.springframework.data.repository.CrudRepository
+
+interface ClickRepository: CrudRepository<ClickEntity, Long>

@@ -32,6 +32,7 @@ object CreateAndSaveUrlSpecs : Spek({
             When calling date.now() `it returns` aDate
             When calling encoder.encode(any(String::class)) `it returns` "hash"
             When calling validator.validate(any(String::class)) `it returns` true
+            When calling validator.isSpam(any(String::class)) `it returns` false
 
             val response = sut.createAndSaveUrl(
                     targetUrl = "target",
@@ -56,7 +57,8 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/hash")
+                        qr = URI("/qa-api/http://localhost/hash"),
+                        safetyLastChecked = aDate
                 )) was called
             }
 
@@ -72,7 +74,8 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/hash")
+                        qr = URI("/qa-api/http://localhost/hash"),
+                        safetyLastChecked = aDate
                 )
             }
 
@@ -83,6 +86,28 @@ object CreateAndSaveUrlSpecs : Spek({
 
         given("the target cannot be validated") {
             When calling validator.validate(any(String::class)) `it returns` false
+
+            val func = {
+                sut.createAndSaveUrl(
+                        targetUrl = "target",
+                        sponsor = "sponsor",
+                        owner = "owner",
+                        mode = 200,
+                        ip = "ip",
+                        safe = false,
+                        country = "country",
+                        domainUri = URI("http://localhost")
+                )
+            }
+
+            it("should raise an exception") {
+                func `should throw` BadRequestException::class `with message` "target failed validations"
+            }
+        }
+
+        given("the target is listed as spam") {
+            When calling validator.validate(any(String::class)) `it returns` true
+            When calling validator.isSpam(any(String::class)) `it returns` true
 
             val func = {
                 sut.createAndSaveUrl(

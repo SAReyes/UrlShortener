@@ -6,7 +6,12 @@ import java.sql.Date
 
 fun urlshortener.domain.Click.toEntity() = ClickEntity(
         id = id,
-        hash = ShortUrlEntity(hash = hash, created = Date(created.time), target = "http://example.org"),
+        hash = ShortUrlEntity(
+                hash = hash,
+                created = Date(created.time),
+                target = "http://example.org",
+                safetyLastChecked = Date(created.time)
+        ),
         created = Date(created.time),
         referrer = referrer,
         browser = browser,
@@ -24,5 +29,6 @@ fun urlshortener.domain.ShortUrl.toEntity() = ShortUrlEntity(
         mode = mode,
         safe = safe,
         ip = ip,
-        country = country
+        country = country,
+        safetyLastChecked = Date(safetyLastChecked.time)
 )

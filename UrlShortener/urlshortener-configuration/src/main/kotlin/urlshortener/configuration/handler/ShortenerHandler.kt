@@ -25,7 +25,6 @@ class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                        private val requestHelper: RequestHelper) {
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
-            .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
             .map { req ->
                 retrieveUrlRedirection.returnRedirectionWhileSavingClick(
                         hash = req.pathVariable("id"),
@@ -38,10 +37,10 @@ class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                         .header("location", su.target)
                         .body(su.toMono())
             }
+            .doOnError(NotFoundException::class) { throw NotFoundFluxException(it) }
 
     fun link(sReq: ServerRequest): Mono<ServerResponse> {
         return sReq.bodyToMono(SaveRequest::class.java)
-                .doOnError(BadRequestException::class) { throw BadRequestFluxException(it) }
                 .map { req ->
                     createAndSaveUrl.createAndSaveUrl(
                             targetUrl = req.url,
@@ -57,5 +56,6 @@ class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(su.toMono())
                 }
+                .doOnError(BadRequestException::class) { throw BadRequestFluxException(it) }
     }
 }

@@ -1,3 +1,5 @@
 package urlshortener.dataprovider.database.shorturl
 
-interface ShortUrlRepository : org.springframework.data.repository.CrudRepository<ShortUrlEntity, String>
+import org.springframework.data.repository.CrudRepository
+
+interface ShortUrlRepository : CrudRepository<ShortUrlEntity, String>

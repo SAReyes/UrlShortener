@@ -24,7 +24,9 @@ object FindUrlByIdDataProviderSpecs : Spek({
                     hash = "hash",
                     target = "target",
                     created = Date(aDate.time),
-                    mode = 200
+                    mode = 200,
+                    safetyLastChecked = Date(aDate.time),
+                    safe = true
             ))
 
             val response = sut.findUrlById("hash")
@@ -37,11 +39,12 @@ object FindUrlByIdDataProviderSpecs : Spek({
                         sponsor = null,
                         owner = null,
                         mode = 200,
-                        safe = null,
+                        safe = true,
                         ip = null,
                         country = null,
                         uri = URI("/hash"),
-                        qr = URI("/qr")
+                        qr = URI("/qr"),
+                        safetyLastChecked = aDate
                 )
             }
         }

@@ -30,7 +30,8 @@ object SaveUrlDataProviderSpecs : Spek({
                     ip = "ip",
                     country = "country",
                     uri = URI("/hash"),
-                    qr = URI("/qr")
+                    qr = URI("/qr"),
+                    safetyLastChecked = aDate
             )
 
             it("should save the correct entity object") {
@@ -45,7 +46,8 @@ object SaveUrlDataProviderSpecs : Spek({
                         mode = 200,
                         safe = true,
                         ip = "ip",
-                        country = "country"
+                        country = "country",
+                        safetyLastChecked = Date(aDate.time)
                 )) was called
             }
         }

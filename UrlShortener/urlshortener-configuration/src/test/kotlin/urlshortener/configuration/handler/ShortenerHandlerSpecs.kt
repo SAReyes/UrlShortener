@@ -62,7 +62,8 @@ object ShortenerHandlerSpecs : Spek({
                             ip = null,
                             country = null,
                             qr = URI("/qr"),
-                            uri = URI("http://localhost/redirectTo")
+                            uri = URI("http://localhost/redirectTo"),
+                            safetyLastChecked = aDate
                     )
 
             When calling requestHelper.getIp(any(ServerRequest::class)) `it returns` "127.0.0.1"
@@ -123,7 +124,8 @@ object ShortenerHandlerSpecs : Spek({
                     ip = "ip",
                     country = null,
                     uri = URI("http://localhost/a-hash"),
-                    qr = URI("")
+                    qr = URI(""),
+                    safetyLastChecked = aDate
             )
 
             it("should respond with the correct data") {

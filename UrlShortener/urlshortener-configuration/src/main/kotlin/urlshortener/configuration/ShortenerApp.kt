@@ -18,8 +18,12 @@ import urlshortener.dataprovider.system.DateFactoryDataProvider
 import urlshortener.dataprovider.system.UrlEncoderDataProvider
 import urlshortener.dataprovider.system.UrlValidatorDataProvider
 import urlshortener.dataprovider.system.UserAgentDataProvider
+import urlshortener.dataprovider.system.spam.SpamHausSpamChecker
+import urlshortener.dataprovider.system.spam.SurblSpamChecker
+import urlshortener.dataprovider.system.spam.UriblSpamChecker
 import urlshortener.usecase.shorturl.CreateAndSaveUrlImpl
 import urlshortener.usecase.shorturl.RetrieveUrlRedirectionImpl
+import java.util.*
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -28,6 +32,9 @@ class ShortenerApp(private val clickRepository: ClickRepository,
 
     @Value("\${urlshortener.qa-api}")
     private val qaApi: String = "https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="
+
+    @Value("\${urlshortener.safety-date-limit}")
+    private val safetyDateLimitString: String = "10"
 
     @Bean
     fun router() = router {
@@ -59,7 +66,9 @@ class ShortenerApp(private val clickRepository: ClickRepository,
             storeClick = saveClick(),
             dateFactory = dateFactory(),
             retrieveBrowser = userAgentProvider(),
-            retrievePlatform = userAgentProvider()
+            retrievePlatform = userAgentProvider(),
+            saveUrl = saveUrl(),
+            urlValidator = urlValidator()
     )
 
     @Bean
@@ -69,7 +78,13 @@ class ShortenerApp(private val clickRepository: ClickRepository,
     fun ipRetriever() = RequestHelperImpl()
 
     @Bean
-    fun urlValidator() = UrlValidatorDataProvider()
+    fun urlValidator(): UrlValidatorDataProvider {
+        return UrlValidatorDataProvider(
+                spamCheckers = arrayListOf(SpamHausSpamChecker(), SurblSpamChecker(), UriblSpamChecker()),
+                dateFactory = dateFactory(),
+                safetyUrlDateLimit = Date(safetyDateLimitString.toLong() * 24 * 60 * 60 * 1000)
+        )
+    }
 
     @Bean
     fun urlEncoder() = UrlEncoderDataProvider()
