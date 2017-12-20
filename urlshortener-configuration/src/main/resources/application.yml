@@ -1,0 +1,11 @@
+# Spring Datasource JDBC
+spring:
+  datasource:
+    platform: hsqldb
+    url: jdbc:hsqldb:mem:.
+    username: sa
+    driver-class-name: org.hsqldb.jdbcDriver
+
+urlshortener:
+  qa-api: https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=
+  safety-date-limit: 7

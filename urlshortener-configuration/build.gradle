@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url "https://repo.spring.io/snapshot" }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+apply plugin: 'kotlin-spring'
+
+jar.enabled = true
+bootJar.enabled = false
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://repo.spring.io/snapshot" }
+}
+
+dependencies {
+    compile project(":urlshortener-dataproviders")
+
+    runtime 'org.hsqldb:hsqldb'
+
+    compile 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    compile "org.springframework.boot:spring-boot-starter-actuator",
+            "org.springframework.boot:spring-boot-starter-webflux"
+    testCompile "org.springframework.boot:spring-boot-starter-test",
+            "io.projectreactor:reactor-test"
+
+    compile libs.kotlin
+    testCompile libs.specs.libs
+    testRuntime libs.specs.runtime
+}
+
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
