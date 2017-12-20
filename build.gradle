@@ -34,7 +34,7 @@ subprojects {
 
 buildscript {
     ext {
-        kotlinVersion = '1.1.51'
+        kotlinVersion = '1.1.61'
         junitGradlePluginVersion = '1.0.0'
     }
 
