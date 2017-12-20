@@ -18,9 +18,9 @@ import urlshortener.dataprovider.system.DateFactoryDataProvider
 import urlshortener.dataprovider.system.UrlEncoderDataProvider
 import urlshortener.dataprovider.system.UrlValidatorDataProvider
 import urlshortener.dataprovider.system.UserAgentDataProvider
-import urlshortener.dataprovider.system.spam.SpamHausSpamChecker
-import urlshortener.dataprovider.system.spam.SurblSpamChecker
-import urlshortener.dataprovider.system.spam.UriblSpamChecker
+import urlshortener.dataprovider.system.blocking.SpamHausSpamChecker
+import urlshortener.dataprovider.system.blocking.SurblSpamChecker
+import urlshortener.dataprovider.system.blocking.UriblSpamChecker
 import urlshortener.usecase.shorturl.CreateAndSaveUrlImpl
 import urlshortener.usecase.shorturl.RetrieveUrlRedirectionImpl
 import java.util.*

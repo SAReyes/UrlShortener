@@ -1,6 +1,6 @@
 package urlshortener.dataprovider.system
 
-import urlshortener.dataprovider.system.spam.SpamChecker
+import urlshortener.dataprovider.system.blocking.SpamChecker
 import urlshortener.domain.ShortUrl
 import urlshortener.usecase.shorturl.DateFactory
 import urlshortener.usecase.shorturl.UrlValidator

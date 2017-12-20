@@ -89,7 +89,7 @@ class RetrieveUrlRedirectionSpecs : Spek({
                 When calling urlValidator!!.shouldCheckSafety(any(ShortUrl::class), eq(reviewDate)) `it returns` true
             }
 
-            it("updates safetyLastChecked on the url if it no longer is spam") {
+            it("updates safetyLastChecked on the url if it no longer is blocking") {
                 When calling urlValidator!!.isSpam(any(String::class)) `it returns` false
 
                 su.safetyLastChecked = reviewDate
@@ -100,7 +100,7 @@ class RetrieveUrlRedirectionSpecs : Spek({
                 response.safetyLastChecked `should equal` reviewDate
             }
 
-            it("raises an exception if the url is now spam") {
+            it("raises an exception if the url is now blocking") {
                 When calling urlValidator!!.isSpam(any(String::class)) `it returns` true
 
                 val func = { sut!!.returnRedirectionWhileSavingClick(hash = "hash", ip = "ip", userAgent = "ua") }

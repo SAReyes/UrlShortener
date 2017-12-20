@@ -1,4 +1,4 @@
-package urlshortener.dataprovider.system.spam
+package urlshortener.dataprovider.system.blocking
 
 class UriblSpamChecker : SpamChecker {
 
