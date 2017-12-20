@@ -105,7 +105,7 @@ object CreateAndSaveUrlSpecs : Spek({
             }
         }
 
-        given("the target is listed as blocking") {
+        given("the target is listed as spamlisting") {
             When calling validator.validate(any(String::class)) `it returns` true
             When calling validator.isSpam(any(String::class)) `it returns` true
 
