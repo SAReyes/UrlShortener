@@ -54,7 +54,7 @@ configure(allprojects - project(":urlshortener")) {
     apply plugin: 'idea'
     apply plugin: 'java'
 
-    group = 'es.unizar.urlshortener'
+    group = 'urlshortener'
     sourceCompatibility = JavaVersion.VERSION_1_8
 
     compileKotlin {
