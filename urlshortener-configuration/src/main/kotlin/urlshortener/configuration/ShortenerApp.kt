@@ -49,12 +49,10 @@ class ShortenerApp(private val clickRepository: ClickRepository,
     @Bean
     fun router() = router {
         accept(MediaType.APPLICATION_JSON).nest {
-            "/api".nest {
-                GET("/clicks", shortenerWebHandler()::clicks)
-                GET("/urls", shortenerWebHandler()::urls)
-                GET("/{id}", shortenerWebHandler()::redirectTo)
-                POST("/link", shortenerWebHandler()::link)
-            }
+            GET("/clicks", shortenerWebHandler()::clicks)
+            GET("/urls", shortenerWebHandler()::urls)
+            GET("/{id}", shortenerWebHandler()::redirectTo)
+            POST("/link", shortenerWebHandler()::link)
         }
     }
 

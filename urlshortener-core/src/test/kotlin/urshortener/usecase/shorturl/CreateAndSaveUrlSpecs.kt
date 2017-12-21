@@ -49,7 +49,7 @@ object CreateAndSaveUrlSpecs : Spek({
                 Verify on saveUrl that saveUrl.saveUrl(ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("http://localhost/api/hash"),
+                        uri = URI("http://localhost/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
@@ -57,7 +57,7 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/api/hash"),
+                        qr = URI("/qa-api/http://localhost/hash"),
                         safetyLastChecked = aDate
                 )) was called
             }
@@ -66,7 +66,7 @@ object CreateAndSaveUrlSpecs : Spek({
                 response `should equal` ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("http://localhost/api/hash"),
+                        uri = URI("http://localhost/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
@@ -74,7 +74,7 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/api/hash"),
+                        qr = URI("/qa-api/http://localhost/hash"),
                         safetyLastChecked = aDate
                 )
             }
