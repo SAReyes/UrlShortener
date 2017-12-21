@@ -1,5 +1,5 @@
-# Disabling sudo moves build to the Container Based Infrastructure on Travis CI.
-sudo: false
+dist: trusty
+sudo: required
 
 language: java
 jdk: oraclejdk8
@@ -8,8 +8,21 @@ install:
   - echo "Overriding default Travis install step to avoid unnecessary './gradlew assemble'."
 
 script:
-  - ci/build.sh
+  - ./gradlew clean check
   
 cache:
   directories:
     - $HOME/.gradle
+
+env:
+  global:
+    - secure: "LaAnT3XiwIKIP8MT5Nr1eZHjZJNTuitR8Dq1xsde0vC8Db3o9f727nOM/C/WjAnbJv+keASaNGV5QNM+oSU6WuYKs7OKqCWqZ72YNPHEyHcN0pt6XaX4nd+yloh6kRI7+ajhBhtE6JskbSeYq8vTQcAXglD5+E901NkUGtJ7XT9RbW1kXdwSs5+Gs4wCCKYRzwRi3CD/4LzCu8M0Qnr1liSyC8bg6a5KP8P88SZSMJOXnvcaHFppMtesIgUuQuGlaizjFfomx/YRNN+JuFL+nU/Ke8oJAyTkSeuoBJm4Q11fG7KSJhBul3B+DwASnNGqxWBnBAXkyOTdLZwb5XxtFIHbgWXecpdri6rxzY6nf9Av9oYkX84mx/JYWCw4h8YCHVHTzibSFhOSuphOtb+AQ9fXWYOQAX4366tAvkD7SS1+BBDqGgsbRdO/tS9hJ2ds2ThDryqZho3dtiyC8ltyF0GLRADwnhMJS+SlHRGE/sbuHk3FKc/sqg97EoHxzursdAurploMerMIKUGaB6BPGsmzwtR7fjGW1bXocsErsnkyOVUsB2pKXSt/AwjuWaQ/MjMAvd4o3PvXB9GznJ0U7fsrZhwEirnxH18GoaBf4smcqeA8UxuKoSly2HTPL9G2PcmBxLbliEN9RwigOIc5BTQOTaNi+6DTdeFq9B0A3gc="
+    - secure: "RhmclJbtL3pufIoYcQelWQDxKAtGkEnNwMPhWEPC4tJGxuF1iQB4+h+KQH34yoa+m+gwrJzYHczKMoDZtNWQNKb3Lcg9uf71fKdHgnpHaE378XwZ0nMY3PtNKp2hBZb6z46TutRiyrgI+3i75LJNMaZMm1BddB4V+Zb6IJrajA9RNxJ9xJwtbk2PwIEQSqiAk5SlCPiHFBMbunAf8pYTB6vaHy+Gy8ksR3c50O25fhbPDR8st8TYG85LZPqd0SQPiczhUTHOwXQXgIQsZfzGqv64t1VJqEAH8fUdhRCoepkb+hp4vPxnCIku0OPcCtDS3ANX6jEKdAGebPk99eOdndKzsDYh1iVjaq0v+RMbw+G7ekvh3PBXK0eq31Jb703F3JwwkrU6qNkLw2pHj8ZeczHeoAzM/KMc/Wcp/plwuU0/lL9WAViqE/TsL+ZU/Pl+H4c2Vu+ltyPrNyyGQVneJEt9uspbVXDy6kc2Wa5+1ZLnRudNCdNvlxnP/PZgkMhDC8ZJ+X28yGfEsZL7/5m6nQrtJcHZNt8zP+NkiOpdayOmps0psbQoZnnB0nzLpsgGjCRcQq3cPl+cNPeM3MPNO9bU7VRA83gGBnLoDcn7hAjm++iUCzE4i4PVTLIL28UJ6clTGT1O/GoWu7T1w0jvIwDzVdr1yxZjJg4dKgKY78E="
+    - secure: "AfaeNJIxBMbKoLu0I3leiEKLKc+xJKN6HbM2Y1DLwJq74tIrFzkVabp/eRT9/1j7fGvThYjx6wINNO01kCZSenvafQOT/+o3aWaMA1WTQ05VL4Bu0Zp1Dbc1B+SbTe/yi4TaTMuxVl9/zOYHHI355Z/0jpwRGWr4mGBU+oYI7fM1i1b6Ws0VeiAGam2X8s7eFVpnMCCIR5NmtMkteRnvtX+JehG0HrQUxvEl/0Y+ewBtsXnxPwhavdKi4LENwkKkby1D7CsKnzbYGtPiwJ0NAe3p8gkiEZvLGBEJk5rTuz2T/5ORpei4+Fp2OFc5CjS1CMRc/O3RxY61s7fs3FA9lTkiR1vKwlhWrmKu2QAmHUoJ45pv/ybECNsuY4ViSpJGqDZwHCsh/dfzOf+G3pxOTbFJpxIkii0KG9r75oQoonEKYzcUyG0FiNvvg0R2rfxHpY7px3G5/v8/P61wee8QBTgDb/88QAZ+bTrfqZRrmSLYrif3LYx51JqooXbY8a1h125FGIi91sZiwAoDjdDZt8y4dgw09JmAlVzGhJxMGRlmLLz49gV5BXdrco3UAQw6M2FvhHdRN0XtrqXPsDDGI5ZlXjn/hq9VVsOfVg9n2bTHnMAlRAsQhFsGr2QZlhuDf4Z1MN2U8Adz8tLPOFkJepM/zv87HkzHgfj8RBxB4lc="
+    - COMMIT=${TRAVIS_COMMIT::8}
+
+
+after_success:
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - ci/deliver.sh
+
