@@ -42,8 +42,8 @@ object FindUrlByIdDataProviderSpecs : Spek({
                         safe = true,
                         ip = null,
                         country = null,
-                        uri = URI("/hash"),
-                        qr = URI("/qr"),
+                        uri = null,
+                        qr = null,
                         safetyLastChecked = aDate
                 )
             }

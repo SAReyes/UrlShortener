@@ -5,4 +5,4 @@ import org.springframework.web.server.ResponseStatusException
 import urlshortener.usecase.exception.NotFoundException
 
 class NotFoundFluxException(notFound: NotFoundException) :
-        ResponseStatusException(HttpStatus.NOT_FOUND, notFound.message, notFound)
+        ResponseStatusException(HttpStatus.NOT_FOUND, notFound.message)

@@ -5,13 +5,21 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.router
+import org.springframework.web.server.ServerWebExchange
+import org.springframework.web.server.WebFilter
+import org.springframework.web.server.WebFilterChain
+import reactor.core.publisher.Mono
 import urlshortener.configuration.handler.ShortenerHandler
 import urlshortener.configuration.util.RequestHelperImpl
 import urlshortener.dataprovider.database.click.ClickRepository
+import urlshortener.dataprovider.database.click.GetAllClicksDataProvider
 import urlshortener.dataprovider.database.click.SaveClickDataProvider
 import urlshortener.dataprovider.database.shorturl.FindUrlByIdDataProvider
+import urlshortener.dataprovider.database.shorturl.GetAllShortUrlsDataProvider
 import urlshortener.dataprovider.database.shorturl.SaveUrlDataProvider
 import urlshortener.dataprovider.database.shorturl.ShortUrlRepository
 import urlshortener.dataprovider.system.DateFactoryDataProvider
@@ -22,6 +30,8 @@ import urlshortener.dataprovider.system.spamlisting.SpamHausSpamChecker
 import urlshortener.dataprovider.system.spamlisting.SurblSpamChecker
 import urlshortener.dataprovider.system.spamlisting.UriblSpamChecker
 import urlshortener.usecase.shorturl.CreateAndSaveUrlImpl
+import urlshortener.usecase.shorturl.ListClicksImpl
+import urlshortener.usecase.shorturl.ListUrlsImpl
 import urlshortener.usecase.shorturl.RetrieveUrlRedirectionImpl
 import java.util.*
 
@@ -39,16 +49,27 @@ class ShortenerApp(private val clickRepository: ClickRepository,
     @Bean
     fun router() = router {
         accept(MediaType.APPLICATION_JSON).nest {
-            GET("/{id}", shortenerWebHandler()::redirectTo)
-            POST("/link", shortenerWebHandler()::link)
+            "/api".nest {
+                GET("/clicks", shortenerWebHandler()::clicks)
+                GET("/urls", shortenerWebHandler()::urls)
+                GET("/{id}", shortenerWebHandler()::redirectTo)
+                POST("/link", shortenerWebHandler()::link)
+            }
         }
+    }
+
+    @Bean
+    fun corsConfigurer(): WebFilter {
+        return CorsFilter()
     }
 
     @Bean
     fun shortenerWebHandler() = ShortenerHandler(
             createAndSaveUrl = createAndSaveUrl(),
             retrieveUrlRedirection = returnRedirectionWhileSavingClick(),
-            requestHelper = ipRetriever()
+            requestHelper = ipRetriever(),
+            listClicks = listClicks(),
+            listUrls = listUrls()
     )
 
     @Bean
@@ -70,6 +91,18 @@ class ShortenerApp(private val clickRepository: ClickRepository,
             saveUrl = saveUrl(),
             urlValidator = urlValidator()
     )
+
+    @Bean
+    fun listClicks() = ListClicksImpl(getAllClicks())
+
+    @Bean
+    fun listUrls() = ListUrlsImpl(getAllShortUrls())
+
+    @Bean
+    fun getAllShortUrls() = GetAllShortUrlsDataProvider(shortUrlRepository)
+
+    @Bean
+    fun getAllClicks() = GetAllClicksDataProvider(clickRepository)
 
     @Bean
     fun userAgentProvider() = UserAgentDataProvider()
@@ -100,6 +133,26 @@ class ShortenerApp(private val clickRepository: ClickRepository,
 
     @Bean
     fun findUrlById() = FindUrlByIdDataProvider(shortUrlRepository)
+}
+
+class CorsFilter : WebFilter {
+    override fun filter(ctx: ServerWebExchange?, chain: WebFilterChain?): Mono<Void> {
+        if (ctx != null) {
+            ctx.response.headers.add("Access-Control-Allow-Origin", "*")
+            ctx.response.headers.add("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
+            ctx.response.headers.add("Access-Control-Allow-Headers", "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range")
+            if (ctx.request.method == HttpMethod.OPTIONS) {
+                ctx.response.headers.add("Access-Control-Max-Age", "1728000")
+                ctx.response.statusCode = HttpStatus.NO_CONTENT
+                return Mono.empty()
+            } else {
+                ctx.response.headers.add("Access-Control-Expose-Headers", "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range")
+                return chain?.filter(ctx) ?: Mono.empty()
+            }
+        } else {
+            return chain?.filter(ctx) ?: Mono.empty()
+        }
+    }
 }
 
 fun main(args: Array<String>) {

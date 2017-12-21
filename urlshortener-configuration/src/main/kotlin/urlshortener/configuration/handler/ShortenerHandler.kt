@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.body
 import reactor.core.publisher.Mono
 import reactor.core.publisher.doOnError
+import reactor.core.publisher.toFlux
 import reactor.core.publisher.toMono
 import urlshortener.configuration.exception.BadRequestFluxException
 import urlshortener.configuration.exception.NotFoundFluxException
@@ -16,13 +17,17 @@ import urlshortener.configuration.util.RequestHelper
 import urlshortener.usecase.exception.BadRequestException
 import urlshortener.usecase.exception.NotFoundException
 import urlshortener.usecase.shorturl.CreateAndSaveUrl
+import urlshortener.usecase.shorturl.ListClicks
+import urlshortener.usecase.shorturl.ListUrls
 import urlshortener.usecase.shorturl.RetrieveUrlRedirection
 import java.util.*
 
 @Component
 class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                        private val retrieveUrlRedirection: RetrieveUrlRedirection,
-                       private val requestHelper: RequestHelper) {
+                       private val requestHelper: RequestHelper,
+                       private val listUrls: ListUrls,
+                       private val listClicks: ListClicks) {
 
     fun redirectTo(sReq: ServerRequest): Mono<ServerResponse> = sReq.toMono()
             .map { req ->
@@ -57,5 +62,17 @@ class ShortenerHandler(private val createAndSaveUrl: CreateAndSaveUrl,
                             .body(su.toMono())
                 }
                 .doOnError(BadRequestException::class) { throw BadRequestFluxException(it) }
+    }
+
+    fun clicks(sReq: ServerRequest): Mono<ServerResponse> {
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(listClicks.listClicks().toFlux())
+    }
+
+    fun urls(sReq: ServerRequest): Mono<ServerResponse> {
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(listUrls.listUrls().toFlux())
     }
 }

@@ -1,0 +1,11 @@
+<div class="container-full">
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1>URL Shortener</h1>
+      <p class="lead">A front-end example page for the project</p>
+      <br>
+      <app-input-form (shortUrlEmitter)="shortUrlHandler($event)"></app-input-form>
+    </div>
+  </div>
+  <app-short-url-list [shortUrl]=ShortUrl></app-short-url-list>
+</div>
