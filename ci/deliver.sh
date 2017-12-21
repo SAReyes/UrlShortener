@@ -8,6 +8,7 @@ docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
 docker push $REPO
 
 cd ui
+nvm install 8.0.0
 npm i
 npm run-script build
 export REPO=sareyes/urlshortener-fe
