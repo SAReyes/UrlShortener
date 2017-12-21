@@ -1,0 +1,18 @@
+<div class="row" *ngIf="loaded">
+  <div class="col-lg-12">
+    <div class="col-sm-offset-4 col-sm-4 mx-auto text-center">
+      <br/>
+      <div class="alert alert-{{shortUrl.err ? 'danger' : 'success'}} lead">
+        <div *ngIf="shortUrl.err; else error">
+          {{shortUrl.errMsg}}
+        </div>
+        <ng-template #error>
+          <a target="_blank" href="{{shortUrl.url}}">{{shortUrl.url}}</a>
+        </ng-template>
+      </div>
+    </div>
+    <div class="col-sm-offset-4 col-sm-4 mx-auto text-center">
+      <img src="{{shortUrl.qr}}">
+    </div>
+  </div>
+</div>
