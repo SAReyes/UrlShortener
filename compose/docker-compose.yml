@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+    reverseproxy:
+        image: reverseproxy
+        ports:
+            - 9090:80
+        restart: always
+
+    fe:
+        depends_on:
+            - reverseproxy
+        image: sareyes/urlshortener-fe
+        ports:
+            - 80
+        restart: always
+
+    be:
+        depends_on:
+            - reverseproxy
+        image: sareyes/urlshortener-be
+        ports:
+            - 8080
+        restart: always

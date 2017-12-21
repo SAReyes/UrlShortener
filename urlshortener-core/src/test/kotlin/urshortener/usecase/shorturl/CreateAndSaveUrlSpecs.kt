@@ -42,14 +42,14 @@ object CreateAndSaveUrlSpecs : Spek({
                     ip = "ip",
                     safe = false,
                     country = "country",
-                    domainUri = URI("http://localhost")
+                    domainUri = URI("http://localhost/api/link")
             )
 
             it("should store the correct short url") {
                 Verify on saveUrl that saveUrl.saveUrl(ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("http://localhost/hash"),
+                        uri = URI("http://localhost/api/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
@@ -57,7 +57,7 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/hash"),
+                        qr = URI("/qa-api/http://localhost/api/hash"),
                         safetyLastChecked = aDate
                 )) was called
             }
@@ -66,7 +66,7 @@ object CreateAndSaveUrlSpecs : Spek({
                 response `should equal` ShortUrl(
                         hash = "hash",
                         target = "target",
-                        uri = URI("http://localhost/hash"),
+                        uri = URI("http://localhost/api/hash"),
                         sponsor = "sponsor",
                         created = aDate,
                         owner = "owner",
@@ -74,7 +74,7 @@ object CreateAndSaveUrlSpecs : Spek({
                         safe = false,
                         ip = "ip",
                         country = "country",
-                        qr = URI("/qa-api/http://localhost/hash"),
+                        qr = URI("/qa-api/http://localhost/api/hash"),
                         safetyLastChecked = aDate
                 )
             }
